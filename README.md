@@ -1,7 +1,7 @@
 # MATH 3180 Project 1: Income Classification
 
 ## Overview
-This project predicts whether a person earns more than $50K using the Adult Census Income dataset.
+This project predicts whether a person earns more than $50K using the [Adult Census Income dataset](https://archive.ics.uci.edu/dataset/20/census+income).
 
 Two modeling approaches are implemented and compared:
 - Naive Bayes with engineered text-style tokens from structured tabular features.
