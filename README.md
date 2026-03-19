@@ -19,7 +19,6 @@ The project also exports confusion matrices and produces a shared-scale comparis
 
 - `Logistic_Regression.ipynb`
   - Loads the same dataset with explicit schema.
-  - Drops `fnlwgt` from features.
   - Uses `ColumnTransformer`:
     - Numeric pipeline: median imputation + standard scaling.
     - Categorical pipeline: most-frequent imputation + one-hot encoding.
