@@ -1,62 +1,78 @@
 # MATH 3180 Project 1: Income Classification
 
+## Team Members
+- Harrison Perone
+- Maggie Mannella
+- Brendan Hurley
+- Kyan Potenciano
+
 ## Overview
 This project predicts whether a person earns more than $50K using the [Adult Census Income dataset](https://archive.ics.uci.edu/dataset/20/census+income).
 
-Two modeling approaches are implemented and compared:
-- Naive Bayes with engineered text-style tokens from structured tabular features.
-- Logistic Regression with mixed-type preprocessing (numeric scaling + one-hot encoding for categoricals).
-
-The project also exports confusion matrices and produces a shared-scale comparison plot.
+The repository contains two modeling workflows and a shared comparison utility:
+- Naive Bayes on tokenized, text-style features derived from tabular columns.
+- Logistic Regression on mixed numeric/categorical features via sklearn pipelines.
+- A comparison script that plots both confusion matrices on a shared color scale.
 
 ## Project Structure
 - `Naive_Bayes.ipynb`
-  - Loads and preprocesses the dataset via `adult_preprocessing.py`.
-  - Engineers column-aware tokens (supports raw, binned, or both for continuous features).
-  - Trains a Bernoulli Naive Bayes model with `CountVectorizer`.
-  - Reports accuracy, confusion matrix, and classification report.
-  - Exports Naive Bayes confusion matrix to `exports/naive_bayes_confusion_matrix.csv`.
+  - Uses `adult_preprocessing.py` to load and tokenize features.
+  - Supports continuous-feature handling modes: `raw`, `binned`, `both`
+  - Trains `BernoulliNB` with `CountVectorizer`
+  - Produces:
+    - accuracy, confusion matrix, classification report
+    - precision/recall bar chart
+    - confusion matrix heat map
+    - feature-importance plots/tables
+    - accuracy vs. maximum feature count plot
+  - Exports `exports/naive_bayes_confusion_matrix.csv`
 
 - `Logistic_Regression.ipynb`
-  - Loads the same dataset with explicit schema.
-  - Uses `ColumnTransformer`:
-    - Numeric pipeline: median imputation + standard scaling.
-    - Categorical pipeline: most-frequent imputation + one-hot encoding.
-  - Trains a logistic regression classifier.
-  - Reports accuracy, confusion matrix, and classification report.
-  - Exports Logistic Regression confusion matrix to `exports/logistic_regression_confusion_matrix.csv`.
+  - Builds a `ColumnTransformer` pipeline:
+    - numeric: median imputation + `StandardScaler`
+    - categorical: most-frequent imputation + `OneHotEncoder`
+  - Trains `LogisticRegression`
+  - Produces:
+    - accuracy, confusion matrix, classification report
+    - precision/recall bar chart
+    - confusion matrix heat map
+    - feature-importance plots/tables
+  - Exports `exports/logistic_regression_confusion_matrix.csv`
 
 - `adult_preprocessing.py`
-  - Central preprocessing module used by the Naive Bayes workflow.
-  - Handles field mapping, token normalization, continuous-feature binning, and mode control (`raw`, `binned`, `both`).
-  - Provides bin-frequency summaries to inspect whether bin definitions capture the data distribution well.
+  - Preprocessing module for the Naive Bayes workflow
+  - Maps raw Adult rows to named fields and normalized tokens
+  - Bins continuous variables and reports bin-frequency summaries
 
 - `plot_confusion_matrix_comparison.py`
-  - Reads both exported confusion matrices.
-  - Plots side-by-side confusion matrices with:
-    - shared color scale,
-    - TN/FP/FN/TP annotations,
-    - responsive font scaling for resize readability.
-  - Saves the final figure to `exports/confusion_matrix_comparison.png`.
+  - Loads both exported confusion matrices
+  - Generates side-by-side confusion matrices with:
+    - shared color scale
+    - TN/FP/FN/TP cell annotations
+    - class labels (`<=50K`, `>50K`)
+  - Saves `exports/confusion_matrix_comparison.png`.
 
 - `census+income/`
-  - Raw dataset and metadata files used by both modeling notebooks.
+  - Dataset files (`adult.data`, `adult.test`) and metadata
 
 - `exports/`
-  - Generated confusion matrix CSV files and comparison figure.
+  - Confusion matrix CSV exports and generated visual outputs
 
-## How to Regenerate Comparison Plot
-From the project root:
+## Reproducible Workflow
+Run from the project root in this order:
+
+1. Open and run all cells in `Naive_Bayes.ipynb`
+2. Open and run all cells in `Logistic_Regression.ipynb`
+3. Generate the side-by-side comparison image:
 
 ```powershell
 python plot_confusion_matrix_comparison.py
 ```
 
-This script expects these files to exist:
+Expected confusion matrix exports before step 3:
 - `exports/naive_bayes_confusion_matrix.csv`
 - `exports/logistic_regression_confusion_matrix.csv`
 
 ## Notes
-- The target is binary: `<=50K` vs `>50K`.
-- `fnlwgt` is intentionally excluded as an input feature in the current model setup.
-- Binning support is included to stabilize sparse count-based features in the Naive Bayes pipeline.
+- Target classes are binary: `<=50K` and `>50K`
+- `fnlwgt` is intentionally excluded from model features
