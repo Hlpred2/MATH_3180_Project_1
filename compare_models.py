@@ -13,13 +13,13 @@ Usage: python compare_models.py
 from pathlib import Path
 import pandas as pd
 
-from evaluation_utils import (
+from utils.evaluation_utils import (
     ensure_dir,
     load_confusion_matrix,
     load_probability_file,
     metrics_from_confusion_matrix,
 )
-from plotting_utils import (
+from utils.plotting_utils import (
     save_confusion_grid,
     save_metric_bar_plot,
     save_pr_plot,
