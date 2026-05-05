@@ -12,9 +12,9 @@ This project predicts whether a person earns more than $50K using the [Adult Cen
 The repository contains four modeling workflows, exploratory analysis, and a model comparison utility:
 - **Data Exploration**: Initial analysis of dataset characteristics and distributions
 - **Naive Bayes**: Text-tokenized features with `BernoulliNB` classifier
-- **Logistic Regression**: Mixed numeric/categorical features via sklearn pipelines
-- **Decision Tree**: Tree-based classification on preprocessed features
-- **Neural Network**: Multi-layer perceptron on standardized features
+- **Logistic Regression**: Mixed numeric/categorical features with `ColumnTransformer` pipeline
+- **Decision Tree**: Tree-based classification using shared `ColumnTransformer` pipeline
+- **Neural Network**: Multi-layer perceptron using shared `ColumnTransformer` pipeline
 - **Model Comparison**: Compares performance metrics across all four models
 
 ## Project Structure
@@ -49,7 +49,9 @@ The repository contains four modeling workflows, exploratory analysis, and a mod
   - Exports `exports/logistic_regression_confusion_matrix.csv` and `exports/logistic_regression_probs.csv`
 
 - `Decision_Tree.ipynb`
-  - Preprocesses features using `ColumnTransformer` pipeline
+  - Preprocesses features using the same `ColumnTransformer` pipeline as Logistic Regression:
+    - numeric: median imputation + `StandardScaler`
+    - categorical: most-frequent imputation + `OneHotEncoder`
   - Trains `DecisionTreeClassifier` with optimized depth and parameters
   - Produces:
     - accuracy, confusion matrix, classification report
@@ -59,7 +61,9 @@ The repository contains four modeling workflows, exploratory analysis, and a mod
   - Exports `exports/decision_tree_confusion_matrix.csv` and `exports/decision_tree_probs.csv`
 
 - `Neural_Network.ipynb`
-  - Preprocesses features with normalization and scaling
+  - Preprocesses features using the same `ColumnTransformer` pipeline as Logistic Regression and Decision Tree:
+    - numeric: median imputation + `StandardScaler`
+    - categorical: most-frequent imputation + `OneHotEncoder`
   - Trains `MLPClassifier` (multi-layer perceptron)
   - Produces:
     - accuracy, confusion matrix, classification report
