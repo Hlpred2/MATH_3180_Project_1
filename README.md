@@ -67,9 +67,8 @@ The repository contains four modeling workflows, exploratory analysis, and a mod
   - Trains `MLPClassifier` (multi-layer perceptron)
   - Produces:
     - accuracy, confusion matrix, classification report
-    - learning curves and loss plots
+    - precision/recall bar chart
     - confusion matrix heat map
-    - feature-importance analysis
   - Exports `exports/mlp_confusion_matrix.csv` and `exports/mlp_probs.csv`
 
 - `adult_preprocessing.py`
